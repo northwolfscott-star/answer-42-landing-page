@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answer 42 — $0 to $10K in 42 Days</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #F5F0E8;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --red: #C0392B;
+    --grey: #1A1A1A;
+    --grey2: #2A2A2A;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    backdrop-filter: blur(12px);
+    background: rgba(8,8,8,0.7);
+  }
+
+  .nav-logo img {
+    height: 52px;
+    width: auto;
+    display: block;
+  }
+
+  nav a.cta-nav {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 0.6rem 1.6rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  nav a.cta-nav:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10rem 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Diagonal gold accent */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 55%;
+    height: 120%;
+    background: linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.04) 100%);
+    border-left: 1px solid rgba(201,168,76,0.12);
+    transform: skewX(-8deg);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.1s;
+  }
+
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 13rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    max-width: 14ch;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.25s;
+  }
+
+  .hero-headline .accent { color: var(--gold); }
+  .hero-headline .italic {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 0.82em;
+    color: var(--gold-light);
+    display: block;
+  }
+
+  .hero-sub {
+    margin-top: 2.5rem;
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 42ch;
+    color: rgba(245,240,232,0.7);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.45s;
+  }
+
+  .hero-sub strong { color: var(--white); font-weight: 500; }
+
+  .guarantee-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.8rem;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(192,57,43,0.5);
+    background: rgba(192,57,43,0.1);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #E07060;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.55s;
+  }
+
+  .guarantee-pill::before {
+    content: '⚔';
+    font-size: 0.9rem;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.65s;
+  }
+
+  a.btn-primary {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 1.1rem 2.8rem;
+    text-decoration: none;
+    position: relative;
+    transition: transform 0.25s, background 0.25s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  a.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(255,255,255,0.25);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    pointer-events: none;
+  }
+  a.btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); }
+
+  .scroll-hint {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .scroll-hint::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.4));
+    animation: pulse 2s infinite;
+  }
+
+  /* ── BIG NUMBER ── */
+  .number-band {
+    border-top: 1px solid rgba(201,168,76,0.12);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .number-band-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 18s linear infinite;
+    white-space: nowrap;
+  }
+
+  .number-band-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(6rem, 16vw, 16rem);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.2);
+    padding: 0 2rem;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .number-band-item.filled {
+    -webkit-text-stroke: 0;
+    color: rgba(201,168,76,0.06);
+  }
+
+  /* ── METHOD SECTION ── */
+  .section {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::after {
+    content: '';
+    height: 1px;
+    width: 60px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.15;
+    margin-bottom: 3rem;
+  }
+
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  /* ── STEPS ── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.12);
+    margin-top: 4rem;
+  }
+
+  .step {
+    background: var(--black);
+    padding: 3rem 2.5rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .step:hover { background: var(--grey); }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.25);
+    margin-bottom: 1.5rem;
+    transition: -webkit-text-stroke 0.3s, color 0.3s;
+  }
+
+  .step:hover .step-num {
+    color: var(--gold);
+    -webkit-text-stroke: 0;
+  }
+
+  .step h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .step p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.55);
+  }
+
+  /* ── WHO IT'S FOR ── */
+  .split-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .checklist li {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(245,240,232,0.8);
+    align-items: flex-start;
+  }
+
+  .checklist li .icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+  .checklist li .icon.yes {
+    border: 1px solid var(--gold);
+    color: var(--gold);
+  }
+  .checklist li .icon.no {
+    border: 1px solid rgba(192,57,43,0.5);
+    color: #E07060;
+  }
+
+  /* ── GUARANTEE BOX ── */
+  .guarantee-section {
+    padding: 6rem 4rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+
+  .guarantee-box {
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 5rem 5rem;
+    position: relative;
+    background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
+    text-align: center;
+  }
+
+  .guarantee-box::before {
+    content: '42';
+    position: absolute;
+    top: -4rem;
+    right: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10rem;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.1);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .guarantee-box h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.95;
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .guarantee-box h2 span { color: var(--gold); }
+
+  .guarantee-box p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.65);
+    max-width: 52ch;
+    margin: 0 auto 3rem;
+  }
+
+  /* ── SCOTT SECTION ── */
+  .scott-section {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 0;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .scott-visual {
+    background: var(--grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 520px;
+    overflow: hidden;
+  }
+
+  .scott-visual-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    text-align: center;
+  }
+
+  .avatar-ring {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .avatar-ring::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .avatar-initial {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .scott-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+  }
+  .scott-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .scott-location {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: rgba(245,240,232,0.4);
+    letter-spacing: 0.1em;
+  }
+
+  .scott-content {
+    padding: 5rem 5rem 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .scott-content blockquote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    line-height: 1.5;
+    color: var(--white);
+    margin-bottom: 2rem;
+    border-left: 3px solid var(--gold);
+    padding-left: 1.5rem;
+  }
+
+  .scott-content p {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.6);
+  }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    text-align: center;
+    padding: 10rem 4rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .final-cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .final-cta h2 .gold { color: var(--gold); }
+
+  .final-cta p {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.55);
+    margin-bottom: 3.5rem;
+    max-width: 40ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  footer .logo { 
+    font-family: 'Bebas Neue', sans-serif; 
+    font-size: 1.2rem; 
+    color: rgba(201,168,76,0.4);
+    letter-spacing: 0.12em;
+  }
+
+  .social-links {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .social-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(245,240,232,0.35);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .social-links a:hover { color: var(--gold); }
+
+  .social-links svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+
+  /* ── LIFESTYLE GALLERY ── */
+  .gallery-section {
+    padding: 6rem 0;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    overflow: hidden;
+  }
+
+  .gallery-header {
+    padding: 0 4rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 0.8fr 1.2fr;
+    grid-template-rows: auto auto;
+    gap: 3px;
+    max-height: 780px;
+  }
+
+  .gallery-item {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .gallery-item:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  .gallery-item:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .gallery-item:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .gallery-item:nth-child(4) {
+    grid-column: 4;
+    grid-row: 1 / 3;
+  }
+
+  .gallery-item:nth-child(5) {
+    grid-column: 2 / 4;
+    grid-row: 2;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%) brightness(0.88);
+    transition: transform 0.6s ease, filter 0.4s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.04);
+    filter: grayscale(0%) brightness(1);
+  }
+
+  .gallery-item .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,0.55) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .gallery-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1.2rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.6);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  @media (max-width: 900px) {
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      max-height: none;
+    }
+    .gallery-item:nth-child(1),
+    .gallery-item:nth-child(4) { grid-column: auto; grid-row: auto; }
+    .gallery-item:nth-child(5) { grid-column: 1 / 3; }
+    .gallery-item img { height: 260px; }
+    .gallery-header { padding: 0 2rem 2rem; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .hero { padding: 9rem 2rem 5rem; }
+    .section { padding: 5rem 2rem; }
+    .split-section { grid-template-columns: 1fr; padding: 4rem 2rem; }
+    .steps { grid-template-columns: 1fr; }
+    .scott-section { grid-template-columns: 1fr; }
+    .scott-content { padding: 3rem 2rem; }
+    .guarantee-box { padding: 3rem 2rem; }
+    .guarantee-section { padding: 4rem 2rem; }
+    .final-cta { padding: 6rem 2rem; }
+    footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><img src="Answer_42_Company_Logo_v2_1.png" alt="Answer 42"></div>
+  <a href="https://www.skool.com/self-improvement-nation-3104/about" target="_blank" class="cta-nav">Join the Community →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="Answer_42_Company_Logo_v2_1.png" alt="Answer 42" style="height:90px; width:90px; object-fit:contain; margin-bottom:1.5rem; opacity:0; animation: fadeUp 0.7s ease forwards 0s;">
+  <p class="hero-eyebrow">Answer 42 · Self-Improvement Coaching Accelerator</p>
+  <h1 class="hero-headline">
+    $0 to
+    <span class="accent">$10K</span>
+    <span class="italic">in 42 Days.</span>
+  </h1>
+  <p class="hero-sub">
+    For self-improvement coaches ready to build <strong>financial, location & time freedom</strong>. 
+    One proven system. One unbreakable guarantee.
+  </p>
+  <div class="guarantee-pill">Or you don't pay. Period.</div>
+  <div class="hero-cta-group">
+    <a href="https://www.skool.com/self-improvement-nation-3104/about" target="_blank" class="btn-primary">Claim Your Spot →</a>
+    <span class="scroll-hint">Discover the method</span>
+  </div>
+</section>
+
+<!-- NUMBER MARQUEE -->
+<div class="number-band">
+  <div class="number-band-track">
+    <span class="number-band-item filled">42</span>
+    <span class="number-band-item">DAYS</span>
+    <span class="number-band-item filled">$10K</span>
+    <span class="number-band-item">FREEDOM</span>
+    <span class="number-band-item filled">42</span>
+    <span class="number-band-item">DAYS</span>
+    <span class="number-band-item filled">$10K</span>
+    <span class="number-band-item">FREEDOM</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="number-band-item filled">42</span>
+    <span class="number-band-item">DAYS</span>
+    <span class="number-band-item filled">$10K</span>
+    <span class="number-band-item">FREEDOM</span>
+    <span class="number-band-item filled">42</span>
+    <span class="number-band-item">DAYS</span>
+    <span class="number-band-item filled">$10K</span>
+    <span class="number-band-item">FREEDOM</span>
+  </div>
+</div>
+
+<!-- METHOD SECTION -->
+<div class="section">
+  <p class="section-label">The Method</p>
+  <h2 class="section-title">
+    The Reverse Engineered<br>
+    <em>$10K Method</em>
+  </h2>
+  <p style="max-width:55ch; color:rgba(245,240,232,0.6); line-height:1.8; font-size:0.95rem;">
+    Most coaches spend years guessing. We reverse-engineer the exact $10K/month outcome first, then build backwards — eliminating everything that doesn't move the needle. 42 days. No fluff. No filler.
+  </p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Reverse Engineer Your $10K Outcome</h3>
+      <p>We start at the destination and map every step backwards. Clarity before action — always. You'll know exactly what's required before day one.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Install the Revenue System</h3>
+      <p>A lean, high-converting offer stack designed for coaches. No complex funnels — just direct, authentic sales that compound as you scale.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Execute in 42 Days Flat</h3>
+      <p>Inside the tribe, surrounded by high performers. Accountability, mentorship, and a proven roadmap that collapses timelines without burning you out.</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<div class="split-section">
+  <div>
+    <p class="section-label">Tribe Criteria</p>
+    <h2 class="section-title" style="font-size:clamp(1.8rem, 3.5vw, 3rem);">Built For Men Who Are <em>Built Different</em></h2>
+    <ul class="checklist">
+      <li><span class="icon yes">✓</span>You coach men in fitness, mindset, spirituality, productivity or holistic self-improvement</li>
+      <li><span class="icon yes">✓</span>You're at $0–$5K/month and hungry to break $10K in record time</li>
+      <li><span class="icon yes">✓</span>You want financial, location & time freedom — not just a side hustle</li>
+      <li><span class="icon yes">✓</span>You operate with honour, discipline and a long-term vision</li>
+      <li><span class="icon yes">✓</span>You're ready to commit fully to 42 days of focused execution</li>
+    </ul>
+  </div>
+  <div>
+    <p class="section-label" style="margin-top:2rem;">This Is NOT For You If</p>
+    <ul class="checklist" style="margin-top:1rem;">
+      <li><span class="icon no">✕</span>You're not a self-improvement coach or content creator</li>
+      <li><span class="icon no">✕</span>You want overnight results without putting in the work</li>
+      <li><span class="icon no">✕</span>You're looking for another course to collect dust</li>
+      <li><span class="icon no">✕</span>You operate without honour or integrity</li>
+    </ul>
+    <p style="margin-top:2.5rem; font-size:0.82rem; color:rgba(245,240,232,0.35); line-height:1.7; max-width:38ch;">
+      ⚔ Outsiders are not welcomed. This community is intentionally exclusive — because the standard is non-negotiable.
+    </p>
+  </div>
+</div>
+
+
+<!-- LIFESTYLE GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-header">
+    <p class="section-label">Life Inside the Tribe</p>
+    <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,3rem);">This Is What <em>Freedom</em> Looks Like</h2>
+    <p style="max-width:50ch; color:rgba(245,240,232,0.55); line-height:1.8; font-size:0.9rem;">Bali villa. Morning breathwork. Evening boxing. Community that pushes you. This is the environment you're stepping into.</p>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="DSCF7835.JPG" alt="Meditation session Bali">
+      <div class="overlay"></div>
+      <span class="gallery-caption">Mind · Meditation</span>
+    </div>
+    <div class="gallery-item">
+      <img src="DSCF8220.JPG" alt="Boxing training poolside">
+      <div class="overlay"></div>
+      <span class="gallery-caption">Body · Training</span>
+    </div>
+    <div class="gallery-item">
+      <img src="DSCF7931.JPG" alt="Community gathering Bali">
+      <div class="overlay"></div>
+      <span class="gallery-caption">Tribe · Connection</span>
+    </div>
+    <div class="gallery-item">
+      <img src="DSCF8179.JPG" alt="Group celebration by pool">
+      <div class="overlay"></div>
+      <span class="gallery-caption">Results · Freedom</span>
+    </div>
+    <div class="gallery-item">
+      <img src="DSCF8180.JPG" alt="Community learning session">
+      <div class="overlay"></div>
+      <span class="gallery-caption">Community · Growth</span>
+    </div>
+  </div>
+</div>
+
+<!-- GUARANTEE -->
+<div class="guarantee-section">
+  <div class="guarantee-box">
+    <h2>$10K in <span>42 Days</span><br>or Don't Pay</h2>
+    <p>
+      That's the deal. Implement the Reverse Engineered $10K Method and if you don't hit $10K per month within 42 days, you owe nothing. Zero risk. All upside.
+    </p>
+    <a href="https://www.skool.com/self-improvement-nation-3104/about" target="_blank" class="btn-primary">Join Self-Improvement Nation →</a>
+  </div>
+</div>
+
+<!-- SCOTT -->
+<div class="scott-section">
+  <div class="scott-visual">
+    <div class="scott-visual-inner">
+      <div class="avatar-ring">
+        <span class="avatar-initial">SN</span>
+      </div>
+      <div class="scott-name">Scott Northwolf</div>
+      <div class="scott-title">Founder · Answer 42</div>
+      <div class="scott-location">🗺 Bali, Indonesia</div>
+    </div>
+  </div>
+  <div class="scott-content">
+    <p class="section-label">Your Guide</p>
+    <blockquote>
+      "Men who mentor the next generation deserve to earn like it. $10K a month isn't a stretch goal — it's the baseline."
+    </blockquote>
+    <p>
+      Scott Northwolf built Self-Improvement Nation from the ground up — an international network of high-performing coaches on a mission to change the world through their work and influence. Based in Bali, operating globally. The community is free to join. The results are not optional.
+    </p>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>
+    Your Next<br>
+    <span class="gold">42 Days</span><br>
+    Start Now.
+  </h2>
+  <p>Join Self-Improvement Nation. Get the method. Hit $10K. Or pay nothing.</p>
+  <a href="https://www.skool.com/self-improvement-nation-3104/about" target="_blank" class="btn-primary" style="font-size:0.9rem; padding:1.3rem 3.5rem;">
+    Enter Self-Improvement Nation →
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo"><img src="Answer_42_Company_Logo_v2_1.png" alt="Answer 42" style="height:44px; width:auto; opacity:0.6;"></div>
+  <div class="social-links">
+    <a href="https://www.youtube.com/@scottnorthwolf4598" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      YouTube
+    </a>
+    <a href="https://www.instagram.com/scott_northwolf" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      Instagram
+    </a>
+  </div>
+  <div>© 2026 Answer 42 · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>
